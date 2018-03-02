@@ -3,6 +3,19 @@ import { vote } from './../reducers/anecdoteReducer'
 import { createNotif, deleteNotif } from './../reducers/notificationReducer'
 import { connect } from 'react-redux'
 import Filter from '../components/Filter'
+import anecdoteService from '../services/anecdotes'
+
+const addVote = async ( props, anecdote ) => {
+  const newObject = { ...anecdote, votes: anecdote.votes +1 }
+  const newAnec = await anecdoteService.update(anecdote.id, newObject)
+
+  props.vote(newAnec)
+  props.createNotif(`You voted '${anecdote.content}'`)
+  setTimeout(() => {
+    props.deleteNotif()
+  }, 5000)
+
+}
 
 const AnecdoteList = (props) => (
   <div>
@@ -15,13 +28,7 @@ const AnecdoteList = (props) => (
         </div>
         <div>
           has {anecdote.votes}
-          <button onClick={() => {
-            props.vote(anecdote.id, anecdote.content)
-            props.createNotif(`You voted '${anecdote.content}'`)
-            setTimeout(() => {
-              props.deleteNotif()
-            }, 5000)
-          }}>vote</button>
+          <button onClick={() => addVote(props, anecdote)}>vote</button>
         </div>
       </div>
     )}
