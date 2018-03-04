@@ -1,33 +1,53 @@
 import React from 'react'
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect
+  Route, Link, NavLink
 } from 'react-router-dom'
 
-const Menu = () => (
-  <div>
-    <Link to='/anecdotes'>anecdotes</Link>&nbsp;
-    <Link to='/create'>create new</Link>&nbsp;
-    <Link to='/about'>about</Link>&nbsp;
-  </div>
-)
+const Menu = () => {
+
+  const menuStyle = {
+    border: 'hidden',
+    padding: 10,
+    borderWidth: 2,
+    background: 'lightblue'
+  }
+  const linkStyle = {
+    border: 'hidden',
+    background: 'grey',
+    fontWeight: 'bold',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 1,
+    paddingRight: 1
+  }
+  return (
+    <div style={menuStyle}>
+      <NavLink activeStyle={linkStyle} exact to='/anecdotes'>anecdotes</NavLink>&nbsp;
+      <NavLink activeStyle={linkStyle} exact to='/create'>create new</NavLink>&nbsp;
+      <NavLink activeStyle={linkStyle} exact to='/about'>about</NavLink>
+    </div>
+  )
+}
+
 const Anecdote = ({ anecdote }) => {
   return (
     <div>
       <h2>{anecdote.content}</h2>
       <p>has {anecdote.votes} votes</p>
     </div>
-  
-)}
+
+  )
+}
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => 
-      <li key={anecdote.id}>
-      <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-      </li>
-    )}
+      {anecdotes.map(anecdote =>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
+      )}
     </ul>
   </div>
 )
@@ -78,7 +98,7 @@ class CreateNew extends React.Component {
       votes: 0
     })
     this.props.history.push('/')
-    
+
   }
 
   render() {
@@ -101,19 +121,27 @@ class CreateNew extends React.Component {
           </div>
           <button>create</button>
         </form>
-        
+
       </div>
     )
 
   }
 }
 
-const Notification = ( {notification} ) => {
+const Notification = ({ notification }) => {
+  const style = {
+    border: 'solid',
+    borderColor: 'green',
+    borderRadius: 4,
+    padding: 10,
+    borderWidth: 2
+  }
+
   if (notification === null) {
     return null
   } else {
-    return(
-      <div>{notification}</div>
+    return (
+      <div style={style}>{notification}</div>
     )
   }
 }
@@ -145,8 +173,9 @@ class App extends React.Component {
 
   addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
-    this.setState({ anecdotes: this.state.anecdotes.concat(anecdote),
-    notification: `a new anecdote '${anecdote.content}' created!`
+    this.setState({
+      anecdotes: this.state.anecdotes.concat(anecdote),
+      notification: `a new anecdote '${anecdote.content}' created!`
     })
     setTimeout(() => {
       this.setState({
@@ -180,12 +209,12 @@ class App extends React.Component {
               <h1>Software anecdotes</h1>
               <Menu />
             </div>
-            <Notification notification={this.state.notification}/>
+            <Notification notification={this.state.notification} />
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
             <Route exact path="/anecdotes" render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
-            <Route exact path="/create" render={({history}) => <CreateNew history={history} addNew={this.addNew} />} />
+            <Route exact path="/create" render={({ history }) => <CreateNew history={history} addNew={this.addNew} />} />
             <Route exact path="/about" render={() => <About />} />
-            <Route exact path="/anecdotes/:id" render={({match}) => 
+            <Route exact path="/anecdotes/:id" render={({ match }) =>
               <Anecdote anecdote={this.anecdoteById(match.params.id)} />}
             />
             <Footer />
