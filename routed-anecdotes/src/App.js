@@ -1,11 +1,11 @@
 import React from 'react'
-import { Container, Table, Form, Button, Message, Grid } from 'semantic-ui-react'
+import { Container, Table, Form, Button, Message, Grid, Menu } from 'semantic-ui-react'
 import {
   BrowserRouter as Router,
   Route, Link, NavLink
 } from 'react-router-dom'
 
-const Menu = () => {
+const MenuBar = () => {
 
   const menuStyle = {
     border: 'hidden',
@@ -22,12 +22,24 @@ const Menu = () => {
     paddingLeft: 1,
     paddingRight: 1
   }
+
   return (
-    <div style={menuStyle}>
-      <NavLink activeStyle={linkStyle} exact to='/anecdotes'>anecdotes</NavLink>&nbsp;
-      <NavLink activeStyle={linkStyle} exact to='/create'>create new</NavLink>&nbsp;
-      <NavLink activeStyle={linkStyle} exact to='/about'>about</NavLink>
-    </div>
+    <Menu inverted>
+      <Menu.Item link>
+        <Link to="/anecdotes">anecdotes</Link>
+      </Menu.Item>
+      <Menu.Item link>
+        <Link to="/create">create new</Link>
+      </Menu.Item>
+      <Menu.Item link>
+        <Link to="/about">about</Link>
+      </Menu.Item>
+    </Menu>
+    // <div style={menuStyle}>
+    //   <NavLink activeStyle={linkStyle} exact to='/anecdotes'>anecdotes</NavLink>&nbsp;
+    //   <NavLink activeStyle={linkStyle} exact to='/create'>create new</NavLink>&nbsp;
+    //   <NavLink activeStyle={linkStyle} exact to='/about'>about</NavLink>
+    // </div>
   )
 }
 
@@ -225,7 +237,7 @@ class App extends React.Component {
           <div>
             <div>
               <h1>Software anecdotes</h1>
-              <Menu />
+              <MenuBar />
             </div>
             <Notification notification={this.state.notification} />
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
