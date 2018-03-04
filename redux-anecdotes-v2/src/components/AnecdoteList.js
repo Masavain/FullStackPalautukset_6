@@ -1,6 +1,6 @@
 import React from 'react'
 import { vote } from './../reducers/anecdoteReducer'
-import { createNotif, deleteNotif } from './../reducers/notificationReducer'
+import { notify } from './../reducers/notificationReducer'
 import { connect } from 'react-redux'
 import Filter from '../components/Filter'
 import anecdoteService from '../services/anecdotes'
@@ -10,10 +10,7 @@ const addVote = async ( props, anecdote ) => {
   const newAnec = await anecdoteService.update(anecdote.id, newObject)
 
   props.vote(newAnec)
-  props.createNotif(`You voted '${anecdote.content}'`)
-  setTimeout(() => {
-    props.deleteNotif()
-  }, 5000)
+  props.notify(`You voted '${anecdote.content}'`, 5)
 
 }
 
@@ -50,5 +47,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { vote, createNotif, deleteNotif }
+  { vote, notify }
 )(AnecdoteList)
