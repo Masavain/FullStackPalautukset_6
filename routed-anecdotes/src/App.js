@@ -1,4 +1,5 @@
 import React from 'react'
+import { Container, Table, Form, Button, Message, Grid } from 'semantic-ui-react'
 import {
   BrowserRouter as Router,
   Route, Link, NavLink
@@ -14,7 +15,7 @@ const Menu = () => {
   }
   const linkStyle = {
     border: 'hidden',
-    background: 'grey',
+    background: 'lightgrey',
     fontWeight: 'bold',
     paddingTop: 10,
     paddingBottom: 10,
@@ -42,27 +43,43 @@ const Anecdote = ({ anecdote }) => {
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote =>
-        <li key={anecdote.id}>
-          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>
-      )}
-    </ul>
+    <Table striped celled>
+      <Table.Body>
+        {anecdotes.map(anecdote =>
+          <Table.Row key={anecdote.id}>
+            <Table.Cell>
+              <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+            </Table.Cell>
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
   </div>
 )
 
 const About = () => (
   <div>
-    <h2>About anecdote app</h2>
-    <p>According to Wikipedia:</p>
+    <Grid padded>
+      <Grid.Row>
+        <h2>About anecdote app</h2>
+      </Grid.Row>
+      <Grid.Row columns={2}>
+        <Grid.Column>
+          <p>According to Wikipedia:</p>
 
-    <em>An anecdote is a brief, revealing account of an individual person or an incident.
+          <em>An anecdote is a brief, revealing account of an individual person or an incident.
       Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself,
       such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative.
       An anecdote is "a story with a point."</em>
 
-    <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
+          <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
+
+        </Grid.Column>
+        <Grid.Column>
+          <img src="https://vignette.wikia.nocookie.net/formalmethods/images/b/bb/Dijkstra.jpeg/revision/latest?cb=20090317132534" />
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   </div>
 )
 
@@ -105,23 +122,22 @@ class CreateNew extends React.Component {
     return (
 
       <div>
-        <h2>create a new anecdote</h2>
-        <form onSubmit={this.handleSubmit} >
-          <div>
-            content
+        <Form widths='equal' size='small' onSubmit={this.handleSubmit} >
+          <h2>create a new anecdote</h2>
+          <Form.Field inline true>
+            <label>content</label>
             <input name='content' value={this.state.content} onChange={this.handleChange} />
-          </div>
-          <div>
-            author
+          </Form.Field>
+          <Form.Field inline true>
+            <label>author</label>
             <input name='author' value={this.state.author} onChange={this.handleChange} />
-          </div>
-          <div>
-            url for more info
+          </Form.Field>
+          <Form.Field inline true>
+            <label>url for more info</label>
             <input name='info' value={this.state.info} onChange={this.handleChange} />
-          </div>
-          <button>create</button>
-        </form>
-
+          </Form.Field>
+          <Button>create</Button>
+        </Form>
       </div>
     )
 
@@ -141,7 +157,9 @@ const Notification = ({ notification }) => {
     return null
   } else {
     return (
-      <div style={style}>{notification}</div>
+      <Message success>
+        {notification}
+      </Message>
     )
   }
 }
@@ -202,7 +220,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <Container>
         <Router>
           <div>
             <div>
@@ -220,9 +238,9 @@ class App extends React.Component {
             <Footer />
           </div>
         </Router>
-      </div>
-    );
+      </Container>
+    )
   }
 }
 
-export default App;
+export default App
